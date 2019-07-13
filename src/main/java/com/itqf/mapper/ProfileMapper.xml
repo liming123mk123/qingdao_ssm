@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+ 传统namespace随便叫！引用的字符串
+ 使用接口的形式！namespace = 接口的全路径
+-->
+<mapper namespace="com.itqf.mapper.ProfileMapper">
+
+    <select id="selectProfileAll" resultType="profile">
+        select * from profile
+    </select>
+    <select id="selectId" resultType="profile">
+        select * from profile where id = #{id}
+    </select>
+    <update id="updateProfile" >
+        update profile set name = #{name},birthday = #{birthday},gender = #{gender},career = #{career},address= #{address},mobile = #{mobile},picture = #{picture} where id = #{id}
+    </update>
+    <delete id="deleteProfile" >
+        delete  from profile where id = #{id}
+    </delete>
+
+
+    <sql id="p_u_sql">
+            p.id as id,
+            p.name as name,
+            p.birthday as birthday,
+            p.gender as gender,
+            p.career as career,
+            p.address as address,
+            p.mobile as mobile,
+            p.picture as picture,
+            p.uid as puid,
+            u.uid as uid,
+            u.uname as uname,
+            u.upwd as upwd
+    </sql>
+    <resultMap id="proMap" type="profile">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="birthday" property="birthday"></result>
+        <result column="gender" property="gender"></result>
+        <result column="career" property="career"></result>
+        <result column="address" property="address"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="picture" property="picture"></result>
+        <result column="puid" property="uid"></result>
+        <association property="user" javaType="user">
+            <id column="uid" property="uid" />
+            <result column="uname" property="uname" />
+            <result column="upwd" property="upwd"/>
+        </association>
+    </resultMap>
+    <select id="selectProfileList"
+            resultMap="proMap">
+        select
+        <include refid="p_u_sql" />
+        from profile p join user u on p.uid = u.uid where p.uid = #{uid}
+    </select>
+</mapper>
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+ 传统namespace随便叫！引用的字符串
+ 使用接口的形式！namespace = 接口的全路径
+-->
+<mapper namespace="com.itqf.mapper.UserMapper">
+
+    <select id="selectUserAll" resultType="user">
+        select * from user
+    </select>
+    <select id="login"   resultType="user">
+          select * from user where uname = #{uname} and upwd = #{upwd}
+    </select>
+    <insert id="register"  >
+          insert into user (uname,upwd) value (#{uname},#{upwd});
+    </insert>
+    <select id="getPassword" parameterType="string" resultType="string">
+        select upwd from user where uname = #{uname}
+    </select>
+    <select id="getUid" parameterType="string" resultType="int">
+        select uid from user where uname = #{uname}
+    </select>
+</mapper>
+
